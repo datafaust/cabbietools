@@ -1,0 +1,81 @@
+---
+title: "Using Cabbietools"
+author: "Fausto Lopez"
+date: "January 2, 2018"
+output: rmarkdown::github_document
+---
+
+#Cabbietools
+
+Cabbietools is designed to streamline access to RBIN data at tlc, which is data on the shared drive that mirrors the most important trip elements from our sql server. It allows the user to access quicker and daily indexed trip files in order to rapid prototype and experiment with the trip records. In order to use run the code below:
+
+```{r setup, include=FALSE, echo = T}
+#if you haven't already install the package with the code below
+#Note you must have rtools and devtools installed
+devtools::install_github("datafaust/cabbietools")
+#load the library
+library(cabbietools)
+```
+
+For now the package has two primary functions, get_trips and get_trips_shared. The first is used to pull trip records from any service for any given date range:
+
+```{r get_trips}
+samp = get_trips("fhv",dt_start = "2017-06-01", dt_end = "2017-06-01")
+
+head(samp)
+
+```
+
+This will pull all the trips between those dates however we can customize the query further by adding which columns we want etc:
+ 
+
+```{r}
+samp = get_trips("fhv",dt_start = "2017-06-01", dt_end = "2017-06-01", features = c("hack","plate","pudt","dodt"))
+
+head(samp)
+```
+
+We can even look at the share table as it stands alone:
+
+```{r}
+#for more parameters to pass run ?get_trips in your R console
+samp = get_trips("share", dt_start = "2017-06-01", dt_end = "2017-06-02")
+
+head(samp)
+```
+
+#Using get_trips_shared
+
+While get_trips returns raw trip data for you to manipulate, get_trips_shared returns trips along with their share status. It does this by running a roll join between the trip data and share trip table in order to mark which trips are part of a share chain and which are not. Below we can see it run:
+
+```{r}
+samp = get_trips_shared(dt_start = "2017-06-01", dt_end = "2017-06-02")
+
+head(samp)
+```
+
+You can see that the code returns the trips along with their share status and all the columns in the table. As with the previous funcion we can specify columns we want, however note that you will always need to call hack and plate as columns since they are needed for merging.
+
+
+#Sql Joins: experimental
+
+Often time we might need to merge trip records against entity or any other tables. Cabbietools implements a beta version of this concept by allowing the user to pass sql queries to their trip record request. In this way, you can extract shared rides while also understanding which companies had shared rides:
+
+```{r}
+samp = get_trips_shared(dt_start = "2017-06-01"
+                     , dt_end = "2017-06-03"
+                     , features = c("hack","plate","pudt","dodt", "baseDisp")
+                     ,merge_ent = T
+                     ,odbc_con = "datawarehouse"
+                     ,query = "select ltrim(rtrim(lic_no)) as lic_no,
+                                      trade_nam as company
+                     from tlc_camis_entity
+                     where lic_code like 'BAS'
+                     "
+                     ,left_key = "baseDisp"
+                     ,right_key = "lic_no")
+head(samp)  
+```
+
+
+This introduction gives you a feel for how the functions work. For a more detailed vignette of some powerful examples go to the vignettes sections.

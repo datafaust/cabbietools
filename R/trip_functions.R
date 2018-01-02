@@ -73,7 +73,7 @@ get_trips = function(service
       pbapply::pblapply(dates,function(x) {
         load(list.files(pattern = as.character(x)))
         pull =  if(is.null(features)) { pull } else { pull[,features, with = F]}
-        print(pull)
+        #print(pull)
         pull[,names(pull) := lapply(.SD, function(x) trimws(toupper(x)))]
         pull = if(dt_convert==F) { pull } else { pull = pull[
           ,':='(share_pudt = fasttime::fastPOSIXct(share_pudt,tz = "GMT")
