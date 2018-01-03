@@ -7,7 +7,7 @@ output: rmarkdown::github_document
 
 #Cabbietools
 
-Cabbietools is designed to streamline access to RBIN data at tlc, which is data on the shared drive that mirrors the most important trip elements from our sql server. It allows the user to access quicker and daily indexed trip files in order to rapid prototype and experiment with the trip records. In order to use run the code below:
+Cabbietools is designed to streamline access to RBIN data at tlc, which is data on the shared drive that mirrors the most important trip elements from our sql server. It allows the user to access quicker and daily indexed trip files in order to rapid prototype and experiment with the trip records. In order to use run the code below (remove the hash on head to see data - this was done to preserve privacy):
 
 ```{r setup, echo = T}
 #if you haven't already install the package with the code below, simply unhash
@@ -22,7 +22,7 @@ For now the package has two primary functions, get_trips and get_trips_shared. T
 ```{r get_trips}
 samp = get_trips("fhv",dt_start = "2017-06-01", dt_end = "2017-06-01")
 
-head(samp)
+#head(samp)
 
 ```
 
@@ -32,7 +32,7 @@ This will pull all the trips between those dates however we can customize the qu
 ```{r}
 samp = get_trips("fhv",dt_start = "2017-06-01", dt_end = "2017-06-01", features = c("hack","plate","pudt","dodt"))
 
-head(samp)
+#head(samp)
 ```
 
 We can even look at the share table as it stands alone:
@@ -41,7 +41,7 @@ We can even look at the share table as it stands alone:
 #for more parameters to pass run ?get_trips in your R console
 samp = get_trips("share", dt_start = "2017-06-01", dt_end = "2017-06-02")
 
-head(samp)
+#head(samp)
 ```
 
 #Using get_trips_shared
@@ -51,7 +51,7 @@ While get_trips returns raw trip data for you to manipulate, get_trips_shared re
 ```{r}
 samp = get_trips_shared(dt_start = "2017-06-01", dt_end = "2017-06-02")
 
-head(samp)
+#head(samp)
 ```
 
 You can see that the code returns the trips along with their share status and all the columns in the table. As with the previous funcion we can specify columns we want, however note that you will always need to call hack and plate as columns since they are needed for merging.
@@ -74,7 +74,7 @@ samp = get_trips_shared(dt_start = "2017-06-01"
                      "
                      ,left_key = "baseDisp"
                      ,right_key = "lic_no")
-head(samp)  
+#head(samp)  
 ```
 
 
