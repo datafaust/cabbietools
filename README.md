@@ -6,7 +6,7 @@ January 2, 2018
 Cabbietools
 ===========
 
-Cabbietools is designed to streamline access to RBIN data at tlc, which is data on the shared drive that mirrors the most important trip elements from our sql server. It allows the user to access quicker and daily indexed trip files in order to rapid prototype and experiment with the trip records. In order to use run the code below:
+Cabbietools is designed to streamline access to RBIN data at tlc, which is data on the shared drive that mirrors the most important trip elements from our sql server. It allows the user to access quicker and daily indexed trip files in order to rapid prototype and experiment with the trip records. In order to use run the code below (remove the hash on head to see data - this was done to preserve privacy in data):
 
 ``` r
 #if you haven't already install the package with the code below, simply unhash
