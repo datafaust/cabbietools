@@ -5,7 +5,8 @@
 \title{Pull trips from shl, fhv or yellow records for a given date range}
 \usage{
 get_trips(service, dt_start = NULL, dt_end = NULL, features = NULL,
-  dt_convert = T)
+  dt_convert = T, merge_ent = F, odbc_con = NULL, query = NULL,
+  left_key = NULL, right_key = NULL, join_type = NULL)
 }
 \arguments{
 \item{service}{the service you want in quotes: 'fhv'.}
@@ -17,6 +18,18 @@ get_trips(service, dt_start = NULL, dt_end = NULL, features = NULL,
 \item{features}{a character vector of desired variables.}
 
 \item{dt_convert}{do you want dates to be automatically converted, defaults to T.}
+
+\item{merge_ent}{if True merges against entity automatically, defaults to FALSE.}
+
+\item{odbc_con}{for accessing sql tables in function, pass your odbc connection string.}
+
+\item{query}{a character string encompassing the sql query.}
+
+\item{left_key}{the left join key in the trip records.}
+
+\item{right_key}{the right join key in entity.}
+
+\item{join_type}{the type of join desired, currently experimental, defaults to left.}
 }
 \description{
 This function allows you to access rbin files on the shared ride to query quickly trip data from any of our services.
