@@ -26,6 +26,8 @@ get_trips_shared(dt_start = NULL, dt_end = NULL, features = NULL,
 \item{right_key}{the right join key in entity.}
 
 \item{join_type}{the type of join desired, currently experimental, defaults to left.}
+
+\item{hack_fil}{a character vector of desired hacks to filter on.}
 }
 \description{
 This function allows you to access rbin files on the shared drive to query quickly share trip data. It also provides access to quick joins on the share data and sql backend.

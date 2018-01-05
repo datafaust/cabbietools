@@ -5,8 +5,8 @@
 \title{Pull trips from shl, fhv or yellow records for a given date range}
 \usage{
 get_trips(service, dt_start = NULL, dt_end = NULL, features = NULL,
-  dt_convert = T, merge_ent = F, odbc_con = NULL, query = NULL,
-  left_key = NULL, right_key = NULL, join_type = NULL)
+  hack_fil = NULL, dt_convert = T, merge_ent = F, odbc_con = NULL,
+  query = NULL, left_key = NULL, right_key = NULL, join_type = NULL)
 }
 \arguments{
 \item{service}{the service you want in quotes: 'fhv'.}
@@ -16,6 +16,8 @@ get_trips(service, dt_start = NULL, dt_end = NULL, features = NULL,
 \item{dt_end}{end date of range.}
 
 \item{features}{a character vector of desired variables.}
+
+\item{hack_fil}{a character vector of desired hacks to filter on.}
 
 \item{dt_convert}{do you want dates to be automatically converted, defaults to T.}
 

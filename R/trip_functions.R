@@ -11,6 +11,7 @@
 #' @param dt_start start date of range.
 #' @param dt_end end date of range.
 #' @param features a character vector of desired variables.
+#' @param hack_fil a character vector of desired hacks to filter on.
 #' @param dt_convert do you want dates to be automatically converted, defaults to T.
 #' @param merge_ent if True merges against entity automatically, defaults to FALSE.
 #' @param odbc_con for accessing sql tables in function, pass your odbc connection string.
@@ -27,6 +28,7 @@ get_trips = function(service
                      ,dt_start = NULL
                      ,dt_end =NULL
                      ,features = NULL
+                     ,hack_fil= NULL
                      ,dt_convert = T
                      ,merge_ent = F
                      ,odbc_con = NULL
@@ -65,6 +67,8 @@ get_trips = function(service
         #correct pudt and dodt for fhv
         if(service == "fhv") { names(pull)[names(pull) == "pud"] = "pudt"} else {pull}
         pull = if(service == "fhv" & x < as.Date("2017-06-01")) {pull = pull[,dodt:=NA]} else {pull}
+        #test hack filter
+        pull =  if(is.null(hack_fil)) { pull } else { pull[hack %in% hack_fil,]}
         #test feature select
         pull =  if(is.null(features)) { pull } else { pull[,features, with = F]}
         #print(pull)
@@ -93,6 +97,7 @@ get_trips = function(service
     
     
     
+    
   } else if(merge_ent == T & service =='share') {
     
     #pull trips
@@ -100,6 +105,8 @@ get_trips = function(service
     trips = rbindlist(
       pbapply::pblapply(dates,function(x) {
         load(list.files(pattern = as.character(x)))
+        #test hack filter
+        pull =  if(is.null(hack_fil)) { pull } else { pull[hack %in% hack_fil,]}
         pull =  if(is.null(features)) { pull } else { pull[,features, with = F]}
         #print(pull)
         pull[,names(pull) := lapply(.SD, function(x) trimws(toupper(x)))]
@@ -130,6 +137,8 @@ get_trips = function(service
     trips = rbindlist(
       pbapply::pblapply(dates,function(x) {
         load(list.files(pattern = as.character(x)))
+        #test hack filter
+        pull =  if(is.null(hack_fil)) { pull } else { pull[hack %in% hack_fil,]}
         pull =  if(is.null(features)) { pull } else { pull[,features, with = F]}
         #print(pull)
         pull[,names(pull) := lapply(.SD, function(x) trimws(toupper(x)))]
@@ -152,6 +161,8 @@ get_trips = function(service
         #correct pudt and dodt for fhv
         if(service == "fhv") { names(pull)[names(pull) == "pud"] = "pudt"} else {pull}
         pull = if(service == "fhv" & x < as.Date("2017-06-01")) {pull = pull[,dodt:=NA]} else {pull}
+        #test hack filter
+        pull =  if(is.null(hack_fil)) { pull } else { pull[hack %in% hack_fil,]}
         #test feature select
         pull =  if(is.null(features)) { pull } else { pull[,features, with = F]}
         #print(pull)
@@ -180,6 +191,7 @@ get_trips = function(service
 #' @param dt_start start date of range.
 #' @param dt_end end date of range.
 #' @param features a character vector of desired variables.
+#' @param hack_fil a character vector of desired hacks to filter on.
 #' @param merge_ent if True merges against entity automatically, defaults to FALSE.
 #' @param odbc_con for accessing sql tables in function, pass your odbc connection string.
 #' @param query a character string encompassing the sql query.
@@ -226,6 +238,8 @@ get_trips_shared = function(dt_start = NULL
         load(list.files(pattern = as.character(x)))
         #correct pudt and dodt for fhv
         names(pull)[names(pull) == "pud"] = "pudt"
+        #test hack filter
+        pull =  if(is.null(hack_fil)) { pull } else { pull[hack %in% hack_fil,]}
         #test feature select
         pull =  if(is.null(features)) { pull } else { pull[,features, with = F]}
         pull[,names(pull) := lapply(.SD, function(x) trimws(toupper(x)))]
@@ -284,6 +298,8 @@ get_trips_shared = function(dt_start = NULL
         load(list.files(pattern = as.character(x)))
         #correct pudt and dodt for fhv
         names(pull)[names(pull) == "pud"] = "pudt"
+        #test hack filter
+        pull =  if(is.null(hack_fil)) { pull } else { pull[hack %in% hack_fil,]}
         #test feature select
         pull =  if(is.null(features)) { pull } else { pull[,features, with = F]}
         pull[,names(pull) := lapply(.SD, function(x) trimws(toupper(x)))]
